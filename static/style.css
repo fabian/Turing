@@ -1,0 +1,32 @@
+
+ol {
+	padding: 0;
+}
+
+li {
+	display: table-cell;
+	vertical-align: bottom;
+	padding-right: 5px;
+}
+
+li input[type=text] {
+	font-family: Consolas, Monaco, monospace;
+	font-size: 1.5em;
+	width: 40px;
+	height: 40px;
+	border: 1px solid #ccc;
+	text-align: center;
+}
+
+li.active input[type=text] {
+	background-color: #fff8de;
+	border-color: #e7ddb4;
+}
+
+li.active:before {
+	content: url('magnet.png');
+	display: block;
+	width: 24px;
+	height: 30px;
+	margin: 0 auto;
+}

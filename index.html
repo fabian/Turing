@@ -1,0 +1,100 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8" />
+	<title>Turing</title>
+	<link rel="stylesheet" href="static/style.css" />
+	<script src="static/jquery.js"></script>
+	<script src="static/raphael.js"></script>
+	<script src="static/joint.js"></script>
+	<script src="static/turing.js"></script>
+	<script>
+		$(function () {
+
+			// Graph
+	        var r = Raphael('canvas', 640, 480);
+	        var st = r.set();
+	        var c1 = r.circle(40, 40, 20);
+	        r.text(40, 40, "s1").attr({ "font-size": 15});	        
+	        var c2 = r.circle(200, 40, 20);
+	        r.text(200, 40, "s2").attr({ "font-size": 15});	        
+	        var c3 = r.circle(400, 40, 20);
+	        r.text(400, 40, "s3").attr({ "font-size": 15});
+	        c1.joint(c2, {attrs: {'stroke-dasharray': 'none'}});
+	        c1.joint(c1, {beSmooth: true, vertices: ['80 90', '50 100'], attrs: {'stroke-dasharray': 'none'}});
+	        c2.joint(c3, {attrs: {'stroke-dasharray': 'none'}});
+	        st.push(c1, c2, c3);
+
+	        // States
+
+			function s3 (value) {
+				// END
+			}
+
+			function s2 (value) {
+
+				st.attr({fill: 'none'});
+				c2.attr({fill: '#fff8de'});
+
+				if (value == 'A') {
+
+					st.attr({fill: 'none'});
+					c3.attr({fill: '#fff8de'});
+
+					return {state: s3, value: 'A', move: 'right'};
+				} else {
+					return {state: s2, value: 'Y', move: 'left'};
+				}
+			}
+
+			function s1(value) {
+
+				st.attr({fill: 'none'});
+				c1.attr({fill: '#fff8de'});
+
+				if (value == 'C') {
+					return {state: s2, value: 'C', move: 'left'};
+				} else {
+					return {state: s1, value: 'X', move: 'right'};
+				}
+			}
+
+			// Turning machine
+			var turing = new Turing(s1, s3);
+
+			$('#run').toggle(function () {
+
+				turing.run();
+				$(this).val("Cancel").attr('disabled', '');
+
+			}, function () {
+
+				var $this = $(this);
+				$this.val("Cancel…").attr('disabled', 'disabled');
+				turing.cancel(function () {
+					$this.val("Run").attr('disabled', '');
+				});
+			});
+
+			$('#reset').click(function () {
+				$('.turing .active').removeClass('active');
+				$('.turing :first').addClass('active');
+			});
+		});
+	</script>
+</head>
+<body>
+
+	<ol class="turing">
+		<li><input value="A" type="text" size="1" maxlength="1" /></li>
+		<li class="active"><input value="B" type="text" size="1" maxlength="1" /></li>
+		<li><input value="B" type="text" size="1" maxlength="1" /></li>
+		<li><input value="B" type="text" size="1" maxlength="1" /></li>
+		<li><input value="C" type="text" size="1" maxlength="1" /></li>
+	</ol>
+	
+	<input id="run" type="button" value="Run" />
+	<input id="reset" type="button" value="Reset" />
+
+	<div id="canvas"></div>
+</body>
+</html>

@@ -30,3 +30,15 @@ li.active:before {
 	height: 30px;
 	margin: 0 auto;
 }
+
+.container {
+	position: fixed;
+	width: 600px;
+	margin: 40px auto;
+	left: 50%;
+	margin-left: -300px;
+}
+
+#canvas {
+	margin: 40px auto;
+}

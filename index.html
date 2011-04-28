@@ -59,7 +59,7 @@
 			}
 
 			// Turning machine
-			var turing = new Turing(s1, s3);
+			var turing = new Turing(s1, s3, ['A', 'B', 'B', 'B', 'C']);
 
 			$('#run').toggle(function () {
 
@@ -76,21 +76,14 @@
 			});
 
 			$('#reset').click(function () {
-				$('.turing .active').removeClass('active');
-				$('.turing :first').addClass('active');
+				turing.reset();
 			});
 		});
 	</script>
 </head>
 <body>
 
-	<ol class="turing">
-		<li><input value="A" type="text" size="1" maxlength="1" /></li>
-		<li class="active"><input value="B" type="text" size="1" maxlength="1" /></li>
-		<li><input value="B" type="text" size="1" maxlength="1" /></li>
-		<li><input value="B" type="text" size="1" maxlength="1" /></li>
-		<li><input value="C" type="text" size="1" maxlength="1" /></li>
-	</ol>
+	<ol class="turing"></ol>
 	
 	<input id="run" type="button" value="Run" />
 	<input id="reset" type="button" value="Reset" />

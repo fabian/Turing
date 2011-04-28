@@ -1,9 +1,15 @@
 
-var Turing = function (start, end) {
+var Turing = function (start, end, tape) {
 	this.start = start;
 	this.end = end;
+	this.tape = tape;
+	this.length = 50;
 	this.speed = 500;
 	this.stop = true;
+
+	this.reset();
+
+	window.scroll(($(document).width() - $(window).width()) / 2, 0);
 }
 
 /**
@@ -18,6 +24,31 @@ Turing.prototype.run = function (state) {
 
 	// start machine
 	this.machine(this.start);
+};
+
+Turing.prototype.reset = function () {
+
+	$('.turing').text('');
+
+	for (var i = 0; i < this.length; i++) {
+
+		$('.turing').append(this.field());
+	}
+
+	var center = this.length / 2;
+	for (var i in this.tape) {
+
+		$('.turing li:eq(' + (center + parseInt(i)) + ') input').val(this.tape[i]);
+	}
+
+	$('.turing li:eq(' + center + ')').addClass('active');
+};
+
+Turing.prototype.field = function (value) {
+	if (!value) {
+		value = '';
+	}
+	return $('<li><input type="text" size="1" maxlength="1" disabled="disabled" /></li>');
 };
 
 /**
@@ -94,16 +125,16 @@ Turing.prototype.move = function (step) {
 
 		case 'left':
 			// move left
-			if (!active.prev().length) {
-				active.before('<li><input type="text" size="1" maxlength="1" disabled="disabled" /></li>');
+			if (!active.prev().prev().length) {
+				active.before(this.field());
 			}
 			active.prev().addClass('active');
 			break;
 
 		default:
 			// move right
-			if (!active.next().length) {
-				active.after('<li><input type="text" size="1" maxlength="1" disabled="disabled" /></li>');
+			if (!active.next().next().length) {
+				active.after(this.field());
 			}
 			active.next().addClass('active');
 	}

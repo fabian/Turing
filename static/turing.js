@@ -3,7 +3,7 @@ var Turing = function (start, end, tape) {
 	this.start = start;
 	this.end = end;
 	this.tape = tape;
-	this.length = 50;
+	this.length = 34;
 	this.speed = 500;
 	this.stop = true;
 
@@ -35,13 +35,15 @@ Turing.prototype.reset = function () {
 		$('.turing').append(this.field());
 	}
 
-	var center = this.length / 2;
+	var center = this.length / 2 - 1;
 	for (var i in this.tape) {
 
 		$('.turing li:eq(' + (center + parseInt(i)) + ') input').val(this.tape[i]);
 	}
 
 	$('.turing li:eq(' + center + ')').addClass('active');
+
+	$('#canvas .state').attr({fill: 'none'});
 };
 
 Turing.prototype.field = function (value) {
@@ -138,6 +140,9 @@ Turing.prototype.move = function (step) {
 			}
 			active.next().addClass('active');
 	}
+
+	$('#canvas .state').attr({fill: 'none'});
+	$('#canvas .' + (step.state.toString()).match(/function\s+([^\s\(]+)/)[1]).attr({fill: '#fff8de'});
 
 	this.timeout = setTimeout(function (that) {
 		that.machine(step.state);

@@ -14,10 +14,13 @@
 	        var r = Raphael('canvas', 640, 480);
 	        var st = r.set();
 	        var c1 = r.circle(40, 40, 20);
-	        r.text(40, 40, "s1").attr({ "font-size": 15});	        
+	        c1.node.setAttribute('class', 'state s1');
+	        r.text(40, 40, "s1").attr({ "font-size": 15});
 	        var c2 = r.circle(200, 40, 20);
+	        c2.node.setAttribute('class', 'state s2');
 	        r.text(200, 40, "s2").attr({ "font-size": 15});	        
 	        var c3 = r.circle(400, 40, 20);
+	        c3.node.setAttribute('class', 'state s3');
 	        r.text(400, 40, "s3").attr({ "font-size": 15});
 	        c1.joint(c2, {attrs: {'stroke-dasharray': 'none'}});
 	        c1.joint(c1, {beSmooth: true, vertices: ['80 90', '50 100'], attrs: {'stroke-dasharray': 'none'}});
@@ -26,20 +29,13 @@
 
 	        // States
 
-			function s3 (value) {
+	        function s3 (value) {
 				// END
 			}
 
 			function s2 (value) {
 
-				st.attr({fill: 'none'});
-				c2.attr({fill: '#fff8de'});
-
 				if (value == 'A') {
-
-					st.attr({fill: 'none'});
-					c3.attr({fill: '#fff8de'});
-
 					return {state: s3, value: 'A', move: 'right'};
 				} else {
 					return {state: s2, value: 'Y', move: 'left'};
@@ -47,9 +43,6 @@
 			}
 
 			function s1(value) {
-
-				st.attr({fill: 'none'});
-				c1.attr({fill: '#fff8de'});
 
 				if (value == 'C') {
 					return {state: s2, value: 'C', move: 'left'};
@@ -85,9 +78,13 @@
 
 	<ol class="turing"></ol>
 	
-	<input id="run" type="button" value="Run" />
-	<input id="reset" type="button" value="Reset" />
+	<div class="container">
+		<div class="control">
+			<input id="run" type="button" value="Run" />
+			<input id="reset" type="button" value="Reset" />
+		</div>
 
-	<div id="canvas"></div>
+		<div id="canvas"></div>
+	</div>
 </body>
 </html>

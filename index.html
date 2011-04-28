@@ -11,7 +11,7 @@
 		$(function () {
 
 			// Graph
-	        var r = Raphael('canvas', 640, 480);
+	        var r = Raphael('canvas', 640, 400);
 	        var st = r.set();
 	        var c1 = r.circle(40, 40, 20);
 	        c1.node.setAttribute('class', 'state s1');
@@ -85,6 +85,8 @@
 		</div>
 
 		<div id="canvas"></div>
+		
+		<footer>Diagram with help of <a href="http://raphaeljs.com/">Raphaël</a> and <a href="http://www.jointjs.com/">Joint</a>.</footer>
 	</div>
 </body>
 </html>

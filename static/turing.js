@@ -3,7 +3,7 @@ var Turing = function (start, end, tape) {
 	this.start = start;
 	this.end = end;
 	this.tape = tape;
-	this.length = 34;
+	this.length = 80;
 	this.speed = 500;
 	this.stop = true;
 

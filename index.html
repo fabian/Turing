@@ -13,28 +13,39 @@
 			// Graph
 	        var r = Raphael('canvas', 640, 400);
 
-	        var c1 = r.circle(40, 40, 20);
-	        c1.node.setAttribute('class', 'state s1');
+	        var s1 = r.circle(40, 40, 20);
+	        s1.node.setAttribute('class', 'state s1');
 	        r.text(40, 40, "s1").attr({ "font-size": 15});
 	        
-	        var c2 = r.circle(200, 40, 20);
-	        c2.node.setAttribute('class', 'state s2');
+	        var s2 = r.circle(200, 40, 20);
+	        s2.node.setAttribute('class', 'state s2');
 	        r.text(200, 40, "s2").attr({ "font-size": 15});
 
-	        var c3 = r.circle(400, 40, 20);
-	        c3.node.setAttribute('class', 'state s3');
-	        r.text(400, 40, "s3").attr({ "font-size": 15});
+	        var s3 = r.circle(350, 40, 20);
+	        s3.node.setAttribute('class', 'state s3');
+	        r.text(350, 40, "s3").attr({ "font-size": 15});
 
-	        c1.joint(c2, {label: 'f', attrs: {'stroke-dasharray': 'none'}});
-	        c1.joint(c1, {beSmooth: true, vertices: ['80 90', '50 100'], attrs: {'stroke-dasharray': 'none'}});
-	        c2.joint(c3, {attrs: {'stroke-dasharray': 'none'}});
+	        var s4 = r.circle(500, 40, 20);
+	        s4.node.setAttribute('class', 'state s4');
+	        r.text(500, 40, "s4").attr({ "font-size": 15});
+
+	        var s5 = r.circle(500, 200, 20);
+	        s5.node.setAttribute('class', 'state s5');
+	        r.text(500, 200, "s5").attr({ "font-size": 15});
+
+	        s1.joint(s2, {label: '1 / X, R', attrs: {'stroke-dasharray': 'none'}});
+	        s2.joint(s2, {label: '1 / 1, R', vertices: ['230 120', '160 120'], attrs: {'stroke-dasharray': 'none'}});
+	        s2.joint(s3, {label: '* / *, R', attrs: {'stroke-dasharray': 'none'}});
+	        s3.joint(s4, {label: '1 / Y, R', attrs: {'stroke-dasharray': 'none'}});
+	        s4.joint(s4, {label: '1 / 1, R\n= / =, R', vertices: ['560 0', '560 80'], attrs: {'stroke-dasharray': 'none'}});
+	        s4.joint(s5, {label: '  / 1, L', attrs: {'stroke-dasharray': 'none'}});
 
 	        // Steps
 			var steps = {};
 
 	        // s1: 
 	        steps['s1:1'] = {state: 's2', value: 'X', move: 'right'};
-	        steps['s1:*'] = {state: 's8', value: '*', move: 'left'};
+	        steps['s1:*'] = {state: 's7', value: '*', move: 'left'};
 
 	        // s2: move to right until * and goto s3 
 	        steps['s2:1'] = {state: 's2', value: '1', move: 'right'};
@@ -42,50 +53,47 @@
 
 	        // s3: replace 1 with Y and goto s4
 	        steps['s3:1'] = {state: 's4', value: 'Y', move: 'right'};
-	        steps['s3:='] = {state: 's7', value: '=', move: 'left'};
+	        steps['s3:='] = {state: 's6', value: '=', move: 'left'};
 
-	        // s4: move until = and goto s5
+	        // s4: write 1 into empty place and goto s5
 	        steps['s4:1'] = {state: 's4', value: '1', move: 'right'};
-	        steps['s4:='] = {state: 's5', value: '=', move: 'right'};
-
-	        // s5: write 1 into empty place and goto s6
-	        steps['s5:1'] = {state: 's5', value: '1', move: 'right'};
-	        steps['s5:']  = {state: 's6', value: '1', move: 'left'};
+	        steps['s4:='] = {state: 's4', value: '=', move: 'right'};
+	        steps['s4:']  = {state: 's5', value: '1', move: 'left'};
 	        
-	        // s5: seek left until Y
+	        // s4: seek left until Y
+	        steps['s5:1'] = {state: 's5', value: '1', move: 'left'};
+	        steps['s5:='] = {state: 's5', value: '=', move: 'left'};
+	        steps['s5:Y'] = {state: 's3', value: 'Y', move: 'right'};
+
+	        // s6: cleanup Y and seek X
+	        steps['s6:Y'] = {state: 's6', value: '1', move: 'left'};
+	        steps['s6:*'] = {state: 's6', value: '*', move: 'left'};
 	        steps['s6:1'] = {state: 's6', value: '1', move: 'left'};
-	        steps['s6:='] = {state: 's6', value: '=', move: 'left'};
-	        steps['s6:Y'] = {state: 's3', value: 'Y', move: 'right'};
-
-	        // s7: cleanup Y and seek X
-	        steps['s7:Y'] = {state: 's7', value: '1', move: 'left'};
-	        steps['s7:*'] = {state: 's7', value: '*', move: 'left'};
-	        steps['s7:1'] = {state: 's7', value: '1', move: 'left'};
-	        steps['s7:X'] = {state: 's1', value: 'X', move: 'right'};
+	        steps['s6:X'] = {state: 's1', value: 'X', move: 'right'};
 	        
-	        // s8: cleanup X
-	        steps['s8:X'] = {state: 's8', value: '1', move: 'left'};
-	        steps['s8:']  = {state: 's11', value: '', move: 'right'};
+	        // s7: cleanup X
+	        steps['s7:X'] = {state: 's7', value: '1', move: 'left'};
+	        steps['s7:']  = {state: 's10', value: '', move: 'right'};
 	        
 	        // handle 0
-	        steps['s1:0'] = {state: 's9', value: '0', move: 'right'};
-	        steps['s3:0'] = {state: 's9', value: '0', move: 'right'};
-	        steps['s9:*'] = {state: 's9', value: '*', move: 'right'};
-	        steps['s9:1'] = {state: 's9', value: '1', move: 'right'};
-	        steps['s9:0'] = {state: 's9', value: '0', move: 'right'};
-	        steps['s9:='] = {state: 's9', value: '=', move: 'right'};
-	        steps['s9:']  = {state: 's10', value: '0', move: 'left'};
-	        steps['s10:='] = {state: 's10', value: '=', move: 'left'};
-	        steps['s10:0'] = {state: 's10', value: '0', move: 'left'};
-	        steps['s10:*'] = {state: 's10', value: '*', move: 'left'};
-	        steps['s10:X'] = {state: 's10', value: '1', move: 'left'};
-	        steps['s10:1'] = {state: 's10', value: '1', move: 'left'};
-	        steps['s10:'] = {state: 's11', value: '', move: 'right'};
+	        steps['s1:0'] = {state: 's8', value: '0', move: 'right'};
+	        steps['s3:0'] = {state: 's8', value: '0', move: 'right'};
+	        steps['s8:*'] = {state: 's8', value: '*', move: 'right'};
+	        steps['s8:1'] = {state: 's8', value: '1', move: 'right'};
+	        steps['s8:0'] = {state: 's8', value: '0', move: 'right'};
+	        steps['s8:='] = {state: 's8', value: '=', move: 'right'};
+	        steps['s8:']  = {state: 's9', value: '0', move: 'left'};
+	        steps['s9:='] = {state: 's9', value: '=', move: 'left'};
+	        steps['s9:0'] = {state: 's9', value: '0', move: 'left'};
+	        steps['s9:*'] = {state: 's9', value: '*', move: 'left'};
+	        steps['s9:X'] = {state: 's9', value: '1', move: 'left'};
+	        steps['s9:1'] = {state: 's9', value: '1', move: 'left'};
+	        steps['s9:'] = {state: 's10', value: '', move: 'right'};
 
 			// Turning machine
-			var turing = new Turing(steps, 's1', 's11');
+			var turing = new Turing(steps, 's1', 's10');
 			turing.tape = ['1', '1', '1', '*', '1', '1', '='];
-			turing.calc = '3 x 2 =';
+			turing.calc = '3 * 2 =';
 			turing.reset();
 
 			$('#run').click(function () {
@@ -101,11 +109,11 @@
 			});
 
 			$('#calc').click(function () {
-				var calc = prompt('Please type in new calculation (e.g. 3 x 2):');
+				var calc = prompt('Please type in new calculation (e.g. 3 * 2):');
 				if (calc) {
-					var match = calc.match(/([0-9]+)[ ]*x[ ]*([0-9]+)/i);
-					var first = parseInt(match[1]), second = parseInt(match[2]);
+					var match = calc.match(/([0-9]+)[ ]*\*[ ]*([0-9]+)/i);
 					if (match) {
+						var first = parseInt(match[1]), second = parseInt(match[2]);
 						var tape = [];
 						var i = 0;
 						if (0 == first) {
@@ -125,7 +133,7 @@
 						}
 						tape[i++] = '=';
 						turing.tape = tape;
-						turing.calc = first + ' x ' + second + ' =';
+						turing.calc = first + ' * ' + second + ' =';
 						turing.reset();
 					} else {
 						alert('Sorry, invalid input!');

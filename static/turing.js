@@ -1,11 +1,13 @@
 
-var Turing = function (start, end, tape) {
+var Turing = function (steps, start, end, tape) {
+	this.steps = steps;
 	this.start = start;
 	this.end = end;
 	this.tape = tape;
 	this.length = 80;
-	this.speed = 500;
+	this.speed = 1;
 	this.stop = true;
+	this.count = 0;
 
 	this.reset();
 
@@ -15,15 +17,16 @@ var Turing = function (start, end, tape) {
 /**
  * Method to run the Turing machine.
  */
-Turing.prototype.run = function (state) {
+Turing.prototype.run = function () {
 
-	// lock Turing
-	$('input').attr('disabled', 'disabled');
+	$('#run').val("Pause");
+	$('#step').attr('disabled', 'disabled');
+	$('#reset').attr('disabled', 'disabled');
 
 	this.stop = false;
 
 	// start machine
-	this.machine(this.start);
+	this.machine();
 };
 
 Turing.prototype.reset = function () {
@@ -35,7 +38,7 @@ Turing.prototype.reset = function () {
 		$('.turing').append(this.field());
 	}
 
-	var center = this.length / 2 - 1;
+	var center = this.length / 2 - 6;
 	for (var i in this.tape) {
 
 		$('.turing li:eq(' + (center + parseInt(i)) + ') input').val(this.tape[i]);
@@ -43,7 +46,17 @@ Turing.prototype.reset = function () {
 
 	$('.turing li:eq(' + center + ')').addClass('active');
 
+	this.current = this.start;
+	this.count = 0;
+
+	this.info();
+};
+
+Turing.prototype.info = function () {
+	$('#count').text(this.count);
+	$('#state').text(this.current);
 	$('#canvas .state').attr({fill: 'none'});
+	$('#canvas .' + this.current).attr({fill: '#fff8de'});
 };
 
 Turing.prototype.field = function (value) {
@@ -56,17 +69,26 @@ Turing.prototype.field = function (value) {
 /**
  * Method to read value and run state to get next step.
  */
-Turing.prototype.machine = function (state) {
+Turing.prototype.machine = function () {
 
 	var value = $('.turing .active input').val();
 
-	console.log("Evaluate " + (state.toString()).match(/function\s+([^\s\(]+)/)[1] + " with value " + value);
+	console.log("Evaluate " + this.current + " with value " + value);
 
-	var step = state(value);
+	var step = this.steps[this.current + value];
 
-	this.timeout = setTimeout(function (that) {
-		that.write(step);
-	}, 1, this);
+	if (typeof step != 'undefined') {
+
+		this.current = step.state;
+		this.count++;
+
+		this.timeout = setTimeout(function (that) {
+			that.write(step);
+		}, 1, this);
+
+	} else {
+		console.log('Undefined state ' + this.current + value);
+	}
 };
 
 /**
@@ -80,36 +102,8 @@ Turing.prototype.write = function (step) {
 	$('.turing .active input').val(step.value);
 
 	this.timeout = setTimeout(function (that) {
-		that.check(step);
+		that.move(step);
 	}, this.speed, this);
-};
-
-/**
- * Check if we keep it running.
- */
-Turing.prototype.check = function (step) {
-
-	if (this.stop == false) {
-
-		if (step.state != this.end) {
-
-			// all good
-			this.move(step);
-
-		} else {
-
-			console.log("Final " + (step.state.toString()).match(/function\s+([^\s\(]+)/)[1]);
-
-			// end of machine
-			$('input').attr('disabled', '');	
-		}
-
-	} else {
-		
-		// stopped
-		this.stop();
-		$('input').attr('disabled', '');	
-	}
 };
 
 /**
@@ -141,14 +135,62 @@ Turing.prototype.move = function (step) {
 			active.next().addClass('active');
 	}
 
-	$('#canvas .state').attr({fill: 'none'});
-	$('#canvas .' + (step.state.toString()).match(/function\s+([^\s\(]+)/)[1]).attr({fill: '#fff8de'});
+	this.info();
 
-	this.timeout = setTimeout(function (that) {
-		that.machine(step.state);
-	}, this.speed, this);
+	if (this.stop == false) {
+
+		this.timeout = setTimeout(function (that) {
+			that.check();
+		}, this.speed, this);
+
+	} else {
+
+		// stopped
+		$('#run').val("Run").attr('disabled', '');
+		$('#step').attr('disabled', '');
+		$('#reset').attr('disabled', '');	
+	}
 };
 
-Turing.prototype.cancel = function (stop) {
-	this.stop = stop;
+/**
+ * Check if we keep it running.
+ */
+Turing.prototype.check = function () {
+
+	if (this.current != this.end) {
+
+		// all good
+		this.machine();
+
+	} else {
+
+		console.log("Final " + this.current);
+
+		var result = [];
+		$('.turing input').each(function () {
+			result[result.length] = $(this).val()
+		});
+		var sum = result.lastIndexOf('1') - result.indexOf('=');
+		$('#calc').text($('#calc').text() + " " + sum);
+
+		// end of machine
+		$('input').attr('disabled', '');	
+	}
+};
+
+Turing.prototype.pause = function () {
+	this.stop = true;
+	$('#run').val("Pause…").attr('disabled', 'disabled');
+};
+
+Turing.prototype.step = function () {
+
+	$('#run').attr('disabled', 'disabled')
+	$('#step').attr('disabled', 'disabled');
+	$('#reset').attr('disabled', 'disabled');
+
+	this.stop = true;
+
+	// start for one step machine
+	this.machine();
 };

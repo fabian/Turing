@@ -1,6 +1,17 @@
 body {
 	background-color: #f4f4f4;
 	margin: 30px 0;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+h2 {
+	font-size: 0.9em;
+	font-weight: normal;
+	margin: 0 0 0.7em 0;
+}
+
+p {
+	margin: 0;
 }
 
 ol {
@@ -46,6 +57,41 @@ li.active:before {
 	border: 1px solid #ccc;
 }
 
+.actions, .count, .state, .calc {
+	float: left;
+	width: 35%;
+	height: 70px;
+	border: 1px solid #ccc;
+	border-width: 0 1px 1px 0;
+}
+
+.actions p {
+	line-height: 2.5em;
+}
+
+.count, .state, .calc {
+	padding-left: 10px;
+}
+
+.count p, .state p, .calc p {
+	font-size: 2em;
+	font-family: Consolas, Monaco, monospace;
+}
+
+.count {
+	width: 10%;
+}
+
+.state {
+	width: 10%;
+}
+
+.calc {
+	width: 35%;
+	border-right: 0;
+}
+
 #canvas {
-	margin: 40px auto;
+	clear: both;
+	margin: 100px auto;
 }

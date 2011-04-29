@@ -31,42 +31,42 @@
 			var steps = {};
 
 	        // s1: 
-	        steps['s1' + '1'] = {state: 's2', value: 'X', move: 'right'};
-	        steps['s1' + '*'] = {state: 's8', value: '*', move: 'left'};
+	        steps['s1:1'] = {state: 's2', value: 'X', move: 'right'};
+	        steps['s1:*'] = {state: 's8', value: '*', move: 'left'};
 
 	        // s2: move to right until * and goto s3 
-	        steps['s2' + '1'] = {state: 's2', value: '1', move: 'right'};
-	        steps['s2' + '*'] = {state: 's3', value: '*', move: 'right'};
+	        steps['s2:1'] = {state: 's2', value: '1', move: 'right'};
+	        steps['s2:*'] = {state: 's3', value: '*', move: 'right'};
 
 	        // s3: replace 1 with Y and goto s4
-	        steps['s3' + '1'] = {state: 's4', value: 'Y', move: 'right'};
-	        steps['s3' + '='] = {state: 's7', value: '=', move: 'left'};
+	        steps['s3:1'] = {state: 's4', value: 'Y', move: 'right'};
+	        steps['s3:='] = {state: 's7', value: '=', move: 'left'};
 
 	        // s4: move until = and goto s5
-	        steps['s4' + '1'] = {state: 's4', value: '1', move: 'right'};
-	        steps['s4' + '='] = {state: 's5', value: '=', move: 'right'};
+	        steps['s4:1'] = {state: 's4', value: '1', move: 'right'};
+	        steps['s4:='] = {state: 's5', value: '=', move: 'right'};
 
 	        // s5: write 1 into empty place and goto s6
-	        steps['s5' + '1'] = {state: 's5', value: '1', move: 'right'};
-	        steps['s5' + '']  = {state: 's6', value: '1', move: 'left'};
+	        steps['s5:1'] = {state: 's5', value: '1', move: 'right'};
+	        steps['s5:']  = {state: 's6', value: '1', move: 'left'};
 	        
 	        // s5: seek left until Y
-	        steps['s6' + '1'] = {state: 's6', value: '1', move: 'left'};
-	        steps['s6' + '='] = {state: 's6', value: '=', move: 'left'};
-	        steps['s6' + 'Y'] = {state: 's3', value: 'Y', move: 'right'};
+	        steps['s6:1'] = {state: 's6', value: '1', move: 'left'};
+	        steps['s6:='] = {state: 's6', value: '=', move: 'left'};
+	        steps['s6:Y'] = {state: 's3', value: 'Y', move: 'right'};
 
 	        // s7: cleanup Y and seek X
-	        steps['s7' + 'Y'] = {state: 's7', value: '1', move: 'left'};
-	        steps['s7' + '*'] = {state: 's7', value: '*', move: 'left'};
-	        steps['s7' + '1'] = {state: 's7', value: '1', move: 'left'};
-	        steps['s7' + 'X'] = {state: 's1', value: 'X', move: 'right'};
+	        steps['s7:Y'] = {state: 's7', value: '1', move: 'left'};
+	        steps['s7:*'] = {state: 's7', value: '*', move: 'left'};
+	        steps['s7:1'] = {state: 's7', value: '1', move: 'left'};
+	        steps['s7:X'] = {state: 's1', value: 'X', move: 'right'};
 	        
 	        // s8: cleanup X
-	        steps['s8' + 'X'] = {state: 's8', value: '1', move: 'left'};
-	        steps['s8' + '']  = {state: 's9', value: '', move: 'right'};
+	        steps['s8:X'] = {state: 's8', value: '1', move: 'left'};
+	        steps['s8:']  = {state: 's9', value: '', move: 'right'};
 
 			// Turning machine
-			var turing = new Turing(steps, 's1', 's9', ['1', '1', '1', '*', '1', '1', '=']);
+			var turing = new Turing(steps, 's1', 's9', ['1', '1', '1', '*', '0', '=']);
 
 			$('#run').toggle(function () {
 				turing.run();

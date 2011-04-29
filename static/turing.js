@@ -73,9 +73,9 @@ Turing.prototype.machine = function () {
 
 	var value = $('.turing .active input').val();
 
-	console.log("Evaluate " + this.current + " with value " + value);
+	console.log('Evaluate ' + this.current + ' with value ' + value);
 
-	var step = this.steps[this.current + value];
+	var step = this.steps[this.current + ':' + value];
 
 	if (typeof step != 'undefined') {
 
@@ -87,7 +87,7 @@ Turing.prototype.machine = function () {
 		}, 1, this);
 
 	} else {
-		console.log('Undefined state ' + this.current + value);
+		console.log('Undefined state ' + this.current + ' with value ' + value);
 	}
 };
 

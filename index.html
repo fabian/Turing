@@ -63,7 +63,7 @@
 	        
 	        // s8: cleanup X
 	        steps['s8:X'] = {state: 's8', value: '1', move: 'left'};
-	        steps['s8:']  = {state: 'se', value: '', move: 'right'};
+	        steps['s8:']  = {state: 's11', value: '', move: 'right'};
 	        
 	        // handle 0
 	        steps['s1:0'] = {state: 's9', value: '0', move: 'right'};
@@ -78,10 +78,13 @@
 	        steps['s10:*'] = {state: 's10', value: '*', move: 'left'};
 	        steps['s10:X'] = {state: 's10', value: '1', move: 'left'};
 	        steps['s10:1'] = {state: 's10', value: '1', move: 'left'};
-	        steps['s10:'] = {state: 'se', value: '', move: 'right'};
+	        steps['s10:'] = {state: 's11', value: '', move: 'right'};
 
 			// Turning machine
-			var turing = new Turing(steps, 's1', 'se', ['1', '1', '1', '*', '1', '1', '=']);
+			var turing = new Turing(steps, 's1', 's11');
+			turing.tape = ['1', '1', '1', '*', '1', '1', '='];
+			turing.calc = '3 x 2 =';
+			turing.reset();
 
 			$('#run').click(function () {
 				turing.run();
@@ -93,6 +96,37 @@
 
 			$('#reset').click(function () {
 				turing.reset();
+			});
+
+			$('#calc').click(function () {
+				var calc = prompt('Please type in new calculation (e.g. 3 x 2):');
+				var match = calc.match(/([0-9]+)[ ]*x[ ]*([0-9]+)/i);
+				var first = parseInt(match[1]), second = parseInt(match[2]);
+				if (match) {
+					var tape = [];
+					var i = 0;
+					if (0 == first) {
+						tape[i++] = '0';
+					} else {
+						for ( ; i < first; i++) {
+							tape[i] = '1';
+						}
+					}
+					tape[i++] = '*';
+					if (0 == second) {
+						tape[i++] = '0';
+					} else {
+						for (var end = second + i; i < end; i++) {
+							tape[i] = '1';
+						}
+					}
+					tape[i++] = '=';
+					turing.tape = tape;
+					turing.calc = first + ' x ' + second + ' =';
+					turing.reset();
+				} else {
+					alert('Sorry, invalid input!');
+				}
 			});
 		});
 	</script>
@@ -112,15 +146,15 @@
 		</div>
 		<div class="count">
 			<h2>Count</h2>
-			<p id="count">0</p>
+			<p id="count"></p>
 		</div>
 		<div class="state">
 			<h2>State</h2>
-			<p id="state">-</p>
+			<p id="state"></p>
 		</div>
 		<div class="calc">
 			<h2>Calculation</h2>
-			<p id="calc">3 x 2 =</p>
+			<p id="calc"></p>
 		</div>
 
 		<div id="canvas"></div>

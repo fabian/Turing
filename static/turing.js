@@ -1,17 +1,13 @@
 
-var Turing = function (steps, start, end, tape) {
+var Turing = function (steps, start, end) {
 	this.steps = steps;
 	this.start = start;
 	this.end = end;
-	this.tape = tape;
+	this.tape = [];
 	this.length = 80;
 	this.speed = 1;
 	this.stop = true;
 	this.count = 0;
-
-	this.reset();
-
-	window.scroll(($(document).width() - $(window).width()) / 2, 0);
 }
 
 /**
@@ -60,8 +56,10 @@ Turing.prototype.reset = function () {
 
 	$('#run').val("Run").attr('disabled', '');
 	$('#step').attr('disabled', '');
+	$('#calc').text(this.calc);
 
 	this.info();
+	window.scroll(($(document).width() - $(window).width()) / 2, 0);
 };
 
 Turing.prototype.info = function () {

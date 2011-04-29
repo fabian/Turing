@@ -93,6 +93,10 @@ li.active:before {
 	border-right: 0;
 }
 
+#calc {
+	cursor: pointer;
+}
+
 #canvas {
 	clear: both;
 	margin: 100px auto;

@@ -31,6 +31,8 @@ li input[type=text] {
 	height: 40px;
 	border: 1px solid #ccc;
 	text-align: center;
+	background-color: #fff;
+	color: #000;
 }
 
 li.active input[type=text] {
@@ -48,11 +50,11 @@ li.active:before {
 
 .container {
 	position: fixed;
-	width: 600px;
+	width: 640px;
 	margin: 40px auto;
 	padding: 25px 20px;
 	left: 50%;
-	margin-left: -320px;
+	margin-left: -343px;
 	background-color: #fff;
 	border: 1px solid #ccc;
 }

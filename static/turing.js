@@ -19,14 +19,23 @@ var Turing = function (steps, start, end, tape) {
  */
 Turing.prototype.run = function () {
 
-	$('#run').val("Pause");
-	$('#step').attr('disabled', 'disabled');
-	$('#reset').attr('disabled', 'disabled');
+	if (this.stop) {
 
-	this.stop = false;
+		$('#run').val("Pause");
+		$('#step').attr('disabled', 'disabled');
+		$('#reset').attr('disabled', 'disabled');
 
-	// start machine
-	this.machine();
+		this.stop = false;
+
+		// start machine
+		this.machine();
+
+	} else {
+
+		// Pause
+		this.stop = true;
+		$('#run').val("Pause…").attr('disabled', 'disabled');
+	}
 };
 
 Turing.prototype.reset = function () {
@@ -38,7 +47,7 @@ Turing.prototype.reset = function () {
 		$('.turing').append(this.field());
 	}
 
-	var center = this.length / 2 - 6;
+	var center = this.length / 2 - 7;
 	for (var i in this.tape) {
 
 		$('.turing li:eq(' + (center + parseInt(i)) + ') input').val(this.tape[i]);
@@ -48,6 +57,9 @@ Turing.prototype.reset = function () {
 
 	this.current = this.start;
 	this.count = 0;
+
+	$('#run').val("Run").attr('disabled', '');
+	$('#step').attr('disabled', '');
 
 	this.info();
 };
@@ -170,17 +182,16 @@ Turing.prototype.check = function () {
 		$('.turing input').each(function () {
 			result[result.length] = $(this).val()
 		});
-		var sum = result.lastIndexOf('1') - result.indexOf('=');
+		var sum = result.lastIndexOf('1') > result.indexOf('=') ? result.lastIndexOf('1') - result.indexOf('=') : 0;
 		$('#calc').text($('#calc').text() + " " + sum);
 
 		// end of machine
-		$('input').attr('disabled', '');	
-	}
-};
+		this.stop = true;
 
-Turing.prototype.pause = function () {
-	this.stop = true;
-	$('#run').val("Pause…").attr('disabled', 'disabled');
+		$('#run').val("Run").attr('disabled', 'disabled');
+		$('#step').attr('disabled', 'disabled');
+		$('#reset').attr('disabled', '');
+	}
 };
 
 Turing.prototype.step = function () {
@@ -192,5 +203,5 @@ Turing.prototype.step = function () {
 	this.stop = true;
 
 	// start for one step machine
-	this.machine();
+	this.check();
 };

@@ -63,15 +63,28 @@
 	        
 	        // s8: cleanup X
 	        steps['s8:X'] = {state: 's8', value: '1', move: 'left'};
-	        steps['s8:']  = {state: 's9', value: '', move: 'right'};
+	        steps['s8:']  = {state: 'se', value: '', move: 'right'};
+	        
+	        // handle 0
+	        steps['s1:0'] = {state: 's9', value: '0', move: 'right'};
+	        steps['s3:0'] = {state: 's9', value: '0', move: 'right'};
+	        steps['s9:*'] = {state: 's9', value: '*', move: 'right'};
+	        steps['s9:1'] = {state: 's9', value: '1', move: 'right'};
+	        steps['s9:0'] = {state: 's9', value: '0', move: 'right'};
+	        steps['s9:='] = {state: 's9', value: '=', move: 'right'};
+	        steps['s9:']  = {state: 's10', value: '0', move: 'left'};
+	        steps['s10:='] = {state: 's10', value: '=', move: 'left'};
+	        steps['s10:0'] = {state: 's10', value: '0', move: 'left'};
+	        steps['s10:*'] = {state: 's10', value: '*', move: 'left'};
+	        steps['s10:X'] = {state: 's10', value: '1', move: 'left'};
+	        steps['s10:1'] = {state: 's10', value: '1', move: 'left'};
+	        steps['s10:'] = {state: 'se', value: '', move: 'right'};
 
 			// Turning machine
-			var turing = new Turing(steps, 's1', 's9', ['1', '1', '1', '*', '0', '=']);
+			var turing = new Turing(steps, 's1', 'se', ['1', '1', '1', '*', '1', '1', '=']);
 
-			$('#run').toggle(function () {
+			$('#run').click(function () {
 				turing.run();
-			}, function () {
-				turing.pause();
 			});
 
 			$('#step').click(function () {

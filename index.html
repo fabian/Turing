@@ -12,20 +12,22 @@
 
 			// Graph
 	        var r = Raphael('canvas', 640, 400);
-	        var st = r.set();
+
 	        var c1 = r.circle(40, 40, 20);
 	        c1.node.setAttribute('class', 'state s1');
 	        r.text(40, 40, "s1").attr({ "font-size": 15});
+	        
 	        var c2 = r.circle(200, 40, 20);
 	        c2.node.setAttribute('class', 'state s2');
-	        r.text(200, 40, "s2").attr({ "font-size": 15});	        
+	        r.text(200, 40, "s2").attr({ "font-size": 15});
+
 	        var c3 = r.circle(400, 40, 20);
 	        c3.node.setAttribute('class', 'state s3');
 	        r.text(400, 40, "s3").attr({ "font-size": 15});
-	        c1.joint(c2, {attrs: {'stroke-dasharray': 'none'}});
+
+	        c1.joint(c2, {label: 'f', attrs: {'stroke-dasharray': 'none'}});
 	        c1.joint(c1, {beSmooth: true, vertices: ['80 90', '50 100'], attrs: {'stroke-dasharray': 'none'}});
 	        c2.joint(c3, {attrs: {'stroke-dasharray': 'none'}});
-	        st.push(c1, c2, c3);
 
 	        // Steps
 			var steps = {};
@@ -100,32 +102,34 @@
 
 			$('#calc').click(function () {
 				var calc = prompt('Please type in new calculation (e.g. 3 x 2):');
-				var match = calc.match(/([0-9]+)[ ]*x[ ]*([0-9]+)/i);
-				var first = parseInt(match[1]), second = parseInt(match[2]);
-				if (match) {
-					var tape = [];
-					var i = 0;
-					if (0 == first) {
-						tape[i++] = '0';
-					} else {
-						for ( ; i < first; i++) {
-							tape[i] = '1';
+				if (calc) {
+					var match = calc.match(/([0-9]+)[ ]*x[ ]*([0-9]+)/i);
+					var first = parseInt(match[1]), second = parseInt(match[2]);
+					if (match) {
+						var tape = [];
+						var i = 0;
+						if (0 == first) {
+							tape[i++] = '0';
+						} else {
+							for ( ; i < first; i++) {
+								tape[i] = '1';
+							}
 						}
-					}
-					tape[i++] = '*';
-					if (0 == second) {
-						tape[i++] = '0';
-					} else {
-						for (var end = second + i; i < end; i++) {
-							tape[i] = '1';
+						tape[i++] = '*';
+						if (0 == second) {
+							tape[i++] = '0';
+						} else {
+							for (var end = second + i; i < end; i++) {
+								tape[i] = '1';
+							}
 						}
+						tape[i++] = '=';
+						turing.tape = tape;
+						turing.calc = first + ' x ' + second + ' =';
+						turing.reset();
+					} else {
+						alert('Sorry, invalid input!');
 					}
-					tape[i++] = '=';
-					turing.tape = tape;
-					turing.calc = first + ' x ' + second + ' =';
-					turing.reset();
-				} else {
-					alert('Sorry, invalid input!');
 				}
 			});
 		});

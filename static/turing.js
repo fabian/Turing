@@ -5,7 +5,7 @@ var Turing = function (steps, start, end) {
 	this.end = end;
 	this.tape = [];
 	this.length = 80;
-	this.speed = 1;
+	this.speed = 100;
 	this.stop = true;
 	this.count = 0;
 }

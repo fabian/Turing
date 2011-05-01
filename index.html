@@ -45,7 +45,7 @@
 
 	        // s1: 
 	        steps['s1:1'] = {state: 's2', value: 'X', move: 'right'};
-	        steps['s1:*'] = {state: 's7', value: '*', move: 'left'};
+	        steps['s1:*'] = {state: 's8', value: '*', move: 'left'};
 
 	        // s2: move to right until * and goto s3 
 	        steps['s2:1'] = {state: 's2', value: '1', move: 'right'};
@@ -71,27 +71,17 @@
 	        steps['s6:1'] = {state: 's6', value: '1', move: 'left'};
 	        steps['s6:X'] = {state: 's1', value: 'X', move: 'right'};
 	        
-	        // s7: cleanup X
-	        steps['s7:X'] = {state: 's7', value: '1', move: 'left'};
-	        steps['s7:']  = {state: 's10', value: '', move: 'right'};
-	        
 	        // handle 0
-	        steps['s1:0'] = {state: 's8', value: '0', move: 'right'};
-	        steps['s3:0'] = {state: 's8', value: '0', move: 'right'};
-	        steps['s8:*'] = {state: 's8', value: '*', move: 'right'};
-	        steps['s8:1'] = {state: 's8', value: '1', move: 'right'};
-	        steps['s8:0'] = {state: 's8', value: '0', move: 'right'};
-	        steps['s8:='] = {state: 's8', value: '=', move: 'right'};
-	        steps['s8:']  = {state: 's9', value: '0', move: 'left'};
-	        steps['s9:='] = {state: 's9', value: '=', move: 'left'};
-	        steps['s9:0'] = {state: 's9', value: '0', move: 'left'};
-	        steps['s9:*'] = {state: 's9', value: '*', move: 'left'};
-	        steps['s9:X'] = {state: 's9', value: '1', move: 'left'};
-	        steps['s9:1'] = {state: 's9', value: '1', move: 'left'};
-	        steps['s9:'] = {state: 's10', value: '', move: 'right'};
+	        steps['s1:0'] = {state: 's7', value: '0', move: 'right'};
+	        steps['s3:0'] = {state: 's7', value: '0', move: 'right'};
+	        steps['s7:*'] = {state: 's7', value: '*', move: 'right'};
+	        steps['s7:1'] = {state: 's7', value: '1', move: 'right'};
+	        steps['s7:0'] = {state: 's7', value: '0', move: 'right'};
+	        steps['s7:='] = {state: 's7', value: '=', move: 'right'};
+	        steps['s7:']  = {state: 's8', value: '0', move: 'right'};
 
 			// Turning machine
-			var turing = new Turing(steps, 's1', 's10');
+			var turing = new Turing(steps, 's1', 's8');
 			turing.tape = ['1', '1', '1', '*', '1', '1', '='];
 			turing.calc = '3 * 2 =';
 			turing.reset();

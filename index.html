@@ -33,19 +33,33 @@
 	        s5.node.setAttribute('class', 'state s5');
 	        r.text(500, 200, "s5").attr({ "font-size": 15});
 
+	        var s6 = r.circle(350, 200, 20);
+	        s6.node.setAttribute('class', 'state s6');
+	        r.text(350, 200, "s6").attr({ "font-size": 15});
+
+	        var s8 = r.circle(40, 200, 20);
+	        s8.node.setAttribute('class', 'state s8');
+	        r.text(40, 200, "s8").attr({ "font-size": 15});
+
 	        s1.joint(s2, {label: '1 / X, R', attrs: {'stroke-dasharray': 'none'}});
 	        s2.joint(s2, {label: '1 / 1, R', vertices: ['230 120', '160 120'], attrs: {'stroke-dasharray': 'none'}});
 	        s2.joint(s3, {label: '* / *, R', attrs: {'stroke-dasharray': 'none'}});
 	        s3.joint(s4, {label: '1 / Y, R', attrs: {'stroke-dasharray': 'none'}});
+	        s3.joint(s6, {label: '= / =, L', attrs: {'stroke-dasharray': 'none'}});
 	        s4.joint(s4, {label: '1 / 1, R\n= / =, R', vertices: ['560 0', '560 80'], attrs: {'stroke-dasharray': 'none'}});
 	        s4.joint(s5, {label: '  / 1, L', attrs: {'stroke-dasharray': 'none'}});
+	        s5.joint(s5, {label: '1 / 1, L\n= / =, L', vertices: ['560 160', '560 240'], attrs: {'stroke-dasharray': 'none'}});
+	        s5.joint(s3, {label: 'Y / Y, R', attrs: {'stroke-dasharray': 'none'}});
+	        s6.joint(s6, {label: 'Y / 1, L\n* / *, L\n1 / 1, L', vertices: ['410 160', '410 240'], attrs: {'stroke-dasharray': 'none'}});
+	        s6.joint(s1, {label: 'X / X, R', vertices: ['90 200'], attrs: {'stroke-dasharray': 'none'}});
+	        s1.joint(s8, {label: '* / *, R', attrs: {'stroke-dasharray': 'none'}});
 
 	        // Steps
 			var steps = {};
 
 	        // s1: 
 	        steps['s1:1'] = {state: 's2', value: 'X', move: 'right'};
-	        steps['s1:*'] = {state: 's8', value: '*', move: 'left'};
+	        steps['s1:*'] = {state: 's8', value: '*', move: 'right'};
 
 	        // s2: move to right until * and goto s3 
 	        steps['s2:1'] = {state: 's2', value: '1', move: 'right'};

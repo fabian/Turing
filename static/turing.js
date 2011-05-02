@@ -66,7 +66,7 @@ Turing.prototype.info = function () {
 	$('#count').text(this.count);
 	$('#state').text(this.current);
 	$('#canvas .state').attr({fill: 'none', stroke: '#000'});
-	$('#canvas .' + this.current).attr({fill: '#edf3fa', stroke: '#264d81'});
+	$('#canvas .' + this.current).attr({fill: '#7d9cec', stroke: '#264d81'});
 };
 
 Turing.prototype.field = function (value) {

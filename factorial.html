@@ -16,6 +16,7 @@
 	        // s1: 
 	        steps['s1:1'] = {state: 's2', value: 'X', move: 'right'};
 	        steps['s1:!'] = {state: 's4', value: '!', move: 'right'};
+	        steps['s1:0'] = {state: 's19', value: '0', move: 'right'};
 
 	        // s2: move to end 
 	        steps['s2:1'] = {state: 's2', value: '1', move: 'right'};
@@ -112,6 +113,11 @@
 	        // s18: replace Y
 	        steps['s18:X'] = {state: 's7', value: 'Y', move: 'right'};
 	        steps['s18:!'] = {state: 's16', value: '!', move: 'right'};
+	        
+	        //s19
+	        steps['s19:!'] = {state: 's19', value: '!', move: 'right'};
+	        steps['s19:='] = {state: 's19', value: '=', move: 'right'};
+	        steps['s19:'] = {state: 's99', value: '0', move: 'left'};
 
 			// Turning machine
 			var turing = new Turing(steps, 's1', 's99');
@@ -134,13 +140,17 @@
 			$('#calc').click(function () {
 				var calc = prompt('Please type in new calculation (e.g. 4!):');
 				if (calc) {
-					var match = calc.match(/([1-9]+)(!)/i);
+					var match = calc.match(/([0-9]+)(!)/i);
 					if (match) {
 						var first = parseInt(match[1]);
 						var tape = [];
 						var i = 0;
-						for (j=0; j<first; j++) {
-							tape[i++] = '1';
+						if(first==0) {
+							tape[i++] = '0';
+						} else {
+							for (j=0; j<first; j++) {
+								tape[i++] = '1';
+							}
 						}
 
 						tape[i++] = '!';

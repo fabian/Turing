@@ -48,7 +48,7 @@
 
 	        // s13: replace second X
 	        steps['s13:X'] = {state: 's7', value: 'Y', move: 'right'};
-	        steps['s13:!'] = {state: 's99', value: '!', move: 'right'};
+	        steps['s13:!'] = {state: 's16', value: '!', move: 'right'};
 
 	        // s7: 
 	        steps['s7:X'] = {state: 's8', value: 'Z', move: 'right'};
@@ -132,31 +132,21 @@
 			});
 
 			$('#calc').click(function () {
-				var calc = prompt('Please type in new calculation (e.g. 3 * 2):');
+				var calc = prompt('Please type in new calculation (e.g. 4!):');
 				if (calc) {
-					var match = calc.match(/([0-9]+)[ ]*\*[ ]*([0-9]+)/i);
+					var match = calc.match(/([1-9]+)(!)/i);
 					if (match) {
-						var first = parseInt(match[1]), second = parseInt(match[2]);
+						var first = parseInt(match[1]);
 						var tape = [];
 						var i = 0;
-						if (0 == first) {
-							tape[i++] = '0';
-						} else {
-							for ( ; i < first; i++) {
-								tape[i] = '1';
-							}
+						for (j=0; j<first; j++) {
+							tape[i++] = '1';
 						}
-						tape[i++] = '*';
-						if (0 == second) {
-							tape[i++] = '0';
-						} else {
-							for (var end = second + i; i < end; i++) {
-								tape[i] = '1';
-							}
-						}
+
+						tape[i++] = '!';
 						tape[i++] = '=';
 						turing.tape = tape;
-						turing.calc = first + ' * ' + second + ' =';
+						turing.calc = first + '!' + ' =';
 						turing.reset();
 					} else {
 						alert('Sorry, invalid input!');

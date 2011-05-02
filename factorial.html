@@ -1,0 +1,198 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8" />
+	<title>Turing machine in JavaScript</title>
+	<link rel="stylesheet" href="static/style.css" />
+	<script src="static/jquery.js"></script>
+	<script src="static/raphael.js"></script>
+	<script src="static/joint.js"></script>
+	<script src="static/turing.js"></script>
+	<script>
+		$(function () {
+
+	        // Steps
+			var steps = {};
+
+	        // s1: 
+	        steps['s1:1'] = {state: 's2', value: 'X', move: 'right'};
+	        steps['s1:!'] = {state: 's4', value: '!', move: 'right'};
+
+	        // s2: move to end 
+	        steps['s2:1'] = {state: 's2', value: '1', move: 'right'};
+	        steps['s2:!'] = {state: 's2', value: '!', move: 'right'};
+	        steps['s2:='] = {state: 's2', value: '=', move: 'right'};
+	        steps['s2:']  = {state: 's3', value: '1', move: 'left'};
+
+	        // s3: seek X
+	        steps['s3:!'] = {state: 's3', value: '!', move: 'left'};
+	        steps['s3:='] = {state: 's3', value: '=', move: 'left'};
+	        steps['s3:1'] = {state: 's3', value: '1', move: 'left'};
+	        steps['s3:X'] = {state: 's1', value: 'X', move: 'right'};
+
+	        // s4: move to end 
+	        steps['s4:1'] = {state: 's4', value: '1', move: 'right'};
+	        steps['s4:!'] = {state: 's4', value: '!', move: 'right'};
+	        steps['s4:='] = {state: 's4', value: '=', move: 'right'};
+	        steps['s4:']  = {state: 's5', value: '*', move: 'left'};
+
+	        // s5: first X
+	        steps['s5:X'] = {state: 's5', value: 'X', move: 'left'};
+	        steps['s5:1'] = {state: 's5', value: '1', move: 'left'};
+	        steps['s5:!'] = {state: 's5', value: '!', move: 'left'};
+	        steps['s5:='] = {state: 's5', value: '=', move: 'left'};
+	        steps['s5:'] = {state: 's6', value: '', move: 'right'};
+	        steps['s5:Z'] = {state: 's7', value: 'Z', move: 'right'};
+
+	        // s6: replace fist X
+	        steps['s6:X'] = {state: 's13', value: 'Y', move: 'right'};
+
+	        // s13: replace second X
+	        steps['s13:X'] = {state: 's7', value: 'Y', move: 'right'};
+	        steps['s13:!'] = {state: 's99', value: '!', move: 'right'};
+
+	        // s7: 
+	        steps['s7:X'] = {state: 's8', value: 'Z', move: 'right'};
+	        steps['s7:!'] = {state: 's14', value: '!', move: 'right'};
+
+	        // s8: 
+	        steps['s8:X'] = {state: 's8', value: 'X', move: 'right'};
+	        steps['s8:1'] = {state: 's8', value: '1', move: 'right'};
+	        steps['s8:!'] = {state: 's9', value: '!', move: 'right'};
+
+	        // s9:
+	        steps['s9:='] = {state: 's9', value: '=', move: 'right'};
+	        steps['s9:1'] = {state: 's10', value: 'X', move: 'right'};
+	        steps['s9:*'] = {state: 's12', value: '*', move: 'left'};
+
+	        // s10:
+	        steps['s10:1'] = {state: 's10', value: '1', move: 'right'};
+	        steps['s10:*'] = {state: 's10', value: '*', move: 'right'};
+	        steps['s10:'] = {state: 's11', value: '1', move: 'left'};
+
+	        // s11:
+	        steps['s11:1'] = {state: 's11', value: '1', move: 'left'};
+	        steps['s11:*'] = {state: 's11', value: '*', move: 'left'};
+	        steps['s11:X'] = {state: 's9', value: 'X', move: 'right'};
+
+	        // s12:
+	        steps['s12:X'] = {state: 's12', value: '1', move: 'left'};
+	        steps['s12:='] = {state: 's5', value: '=', move: 'left'};
+
+	        // s14:
+	        steps['s14:='] = {state: 's14', value: '=', move: 'right'};
+	        steps['s14:1'] = {state: 's14', value: '1', move: 'right'};
+	        steps['s14:*'] = {state: 's14', value: '1', move: 'right'};
+	        steps['s14:'] = {state: 's19', value: '', move: 'left'};
+
+	        // s19:
+	        steps['s19:1'] = {state: 's15', value: '', move: 'left'};
+
+	        // s15:
+	        steps['s15:1'] = {state: 's15', value: '1', move: 'left'};
+	        steps['s15:='] = {state: 's15', value: '=', move: 'left'};
+	        steps['s15:!'] = {state: 's15', value: '!', move: 'left'};
+	        steps['s15:Z'] = {state: 's15', value: 'X', move: 'left'};
+	        steps['s15:Y'] = {state: 's16', value: 'Y', move: 'right'};
+
+	        // s16: move to end 
+	        steps['s16:1'] = {state: 's16', value: '1', move: 'right'};
+	        steps['s16:!'] = {state: 's16', value: '!', move: 'right'};
+	        steps['s16:='] = {state: 's16', value: '=', move: 'right'};
+	        steps['s16:X'] = {state: 's16', value: 'X', move: 'right'};
+	        steps['s16:']  = {state: 's17', value: '*', move: 'left'};
+	        steps['s16:*']  = {state: 's99', value: '', move: 'left'};
+
+	        // s17: first X
+	        steps['s17:X'] = {state: 's17', value: 'X', move: 'left'};
+	        steps['s17:1'] = {state: 's17', value: '1', move: 'left'};
+	        steps['s17:!'] = {state: 's17', value: '!', move: 'left'};
+	        steps['s17:='] = {state: 's17', value: '=', move: 'left'};
+	        steps['s17:Y'] = {state: 's18', value: 'Y', move: 'right'};
+
+	        // s18: replace Y
+	        steps['s18:X'] = {state: 's7', value: 'Y', move: 'right'};
+	        steps['s18:!'] = {state: 's16', value: '!', move: 'right'};
+
+			// Turning machine
+			var turing = new Turing(steps, 's1', 's99');
+			turing.tape = ['1', '1', '1', '1', '!', '='];
+			turing.calc = '4! =';
+			turing.reset();
+
+			$('#run').click(function () {
+				turing.run();
+			});
+
+			$('#step').click(function () {
+				turing.step();
+			});
+
+			$('#reset').click(function () {
+				turing.reset();
+			});
+
+			$('#calc').click(function () {
+				var calc = prompt('Please type in new calculation (e.g. 3 * 2):');
+				if (calc) {
+					var match = calc.match(/([0-9]+)[ ]*\*[ ]*([0-9]+)/i);
+					if (match) {
+						var first = parseInt(match[1]), second = parseInt(match[2]);
+						var tape = [];
+						var i = 0;
+						if (0 == first) {
+							tape[i++] = '0';
+						} else {
+							for ( ; i < first; i++) {
+								tape[i] = '1';
+							}
+						}
+						tape[i++] = '*';
+						if (0 == second) {
+							tape[i++] = '0';
+						} else {
+							for (var end = second + i; i < end; i++) {
+								tape[i] = '1';
+							}
+						}
+						tape[i++] = '=';
+						turing.tape = tape;
+						turing.calc = first + ' * ' + second + ' =';
+						turing.reset();
+					} else {
+						alert('Sorry, invalid input!');
+					}
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+
+	<ol class="turing"></ol>
+	
+	<div class="container">
+		<div class="actions">
+			<h2>Actions</h2>
+			<p>
+				<input id="run" type="button" value="Run" />
+				<input id="step" type="button" value="Next step" />
+				<input id="reset" type="button" value="Reset" />
+			</p>
+		</div>
+		<div class="count">
+			<h2>Count</h2>
+			<p id="count"></p>
+		</div>
+		<div class="state">
+			<h2>State</h2>
+			<p id="state"></p>
+		</div>
+		<div class="calc">
+			<h2>Calculation</h2>
+			<p id="calc"></p>
+		</div>
+
+		<div id="canvas"></div>
+	</div>
+</body>
+</html>

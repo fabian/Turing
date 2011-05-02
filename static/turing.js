@@ -4,7 +4,7 @@ var Turing = function (steps, start, end) {
 	this.start = start;
 	this.end = end;
 	this.tape = [];
-	this.length = 80;
+	this.length = 40;
 	this.speed = 100;
 	this.stop = true;
 	this.count = 0;
@@ -43,13 +43,13 @@ Turing.prototype.reset = function () {
 		$('.turing').append(this.field());
 	}
 
-	var center = this.length / 2 - 7;
+	var start = 5;
 	for (var i in this.tape) {
 
-		$('.turing li:eq(' + (center + parseInt(i)) + ') input').val(this.tape[i]);
+		$('.turing li:eq(' + (start + parseInt(i)) + ') input').val(this.tape[i]);
 	}
 
-	$('.turing li:eq(' + center + ')').addClass('active');
+	$('.turing li:eq(' + start + ')').addClass('active');
 
 	this.current = this.start;
 	this.count = 0;
@@ -59,7 +59,6 @@ Turing.prototype.reset = function () {
 	$('#calc').text(this.calc);
 
 	this.info();
-	window.scroll(($(document).width() - $(window).width()) / 2, 0);
 };
 
 Turing.prototype.info = function () {

@@ -43,7 +43,7 @@ Turing.prototype.reset = function () {
 		$('.turing').append(this.field());
 	}
 
-	var start = 5;
+	var start = 3;
 	for (var i in this.tape) {
 
 		$('.turing li:eq(' + (start + parseInt(i)) + ') input').val(this.tape[i]);

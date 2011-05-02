@@ -9,61 +9,6 @@
 	<script src="static/turing.js"></script>
 	<script>
 		$(function () {
-
-			// Graph
-	        var r = Raphael('canvas', 640, 400);
-			var top = 200;
-			
-	        var s1 = r.circle(40, top + 0, 20);
-	        s1.node.setAttribute('class', 'state s1');
-	        r.text(40, top + 0, "s1").attr({ "font-size": 15});
-	        
-	        var s2 = r.circle(200, top + 0, 20);
-	        s2.node.setAttribute('class', 'state s2');
-	        r.text(200, top + 0, "s2").attr({ "font-size": 15});
-
-	        var s3 = r.circle(350, top + 0, 20);
-	        s3.node.setAttribute('class', 'state s3');
-	        r.text(350, top + 0, "s3").attr({ "font-size": 15});
-
-	        var s4 = r.circle(500, top + 0, 20);
-	        s4.node.setAttribute('class', 'state s4');
-	        r.text(500, top + 0, "s4").attr({ "font-size": 15});
-
-	        var s5 = r.circle(500, top + 160, 20);
-	        s5.node.setAttribute('class', 'state s5');
-	        r.text(500, top + 160, "s5").attr({ "font-size": 15});
-
-	        var s6 = r.circle(350, top + 160, 20);
-	        s6.node.setAttribute('class', 'state s6');
-	        r.text(350, top + 160, "s6").attr({ "font-size": 15});
-
-	        var s7 = r.circle(200, top - 100, 20);
-	        s7.node.setAttribute('class', 'state s7');
-	        r.text(200, top - 100, "s7").attr({ "font-size": 15});
-
-	        var s8 = r.circle(40, top - 100, 20);
-	        s8.node.setAttribute('class', 'state s8');
-	        r.text(40, top - 100, "s8").attr({ "font-size": 15});
-
-	        s1.joint(s2, {label: '1 / X, R', attrs: {'stroke-dasharray': 'none'}});
-	        s2.joint(s2, {label: '1 / 1, R', vertices: ['230 ' + (top + 80), '160 ' + (top + 80)], attrs: {'stroke-dasharray': 'none'}});
-	        s2.joint(s3, {label: '* / *, R', attrs: {'stroke-dasharray': 'none'}});
-	        s3.joint(s4, {label: '1 / Y, R', attrs: {'stroke-dasharray': 'none'}});
-	        s3.joint(s6, {label: '= / =, L', attrs: {'stroke-dasharray': 'none'}});
-	        s4.joint(s4, {label: '1 / 1, R\n= / =, R', vertices: ['560 ' + (top - 40), '560 ' + (top + 40)], attrs: {'stroke-dasharray': 'none'}});
-	        s4.joint(s5, {label: '  / 1, L', attrs: {'stroke-dasharray': 'none'}});
-	        s5.joint(s5, {label: '1 / 1, L\n= / =, L', vertices: ['560 ' + (top + 120), '560 ' + (top + 200)], attrs: {'stroke-dasharray': 'none'}});
-	        s5.joint(s3, {label: 'Y / Y, R', attrs: {'stroke-dasharray': 'none'}});
-	        s6.joint(s6, {label: 'Y / 1, L\n* / *, L\n1 / 1, L', vertices: ['410 ' + (top + 120), '410 ' + (top + 200)], attrs: {'stroke-dasharray': 'none'}});
-	        s6.joint(s1, {label: 'X / X, R', vertices: ['160 ' + (top + 160)], attrs: {'stroke-dasharray': 'none'}});
-	        s1.joint(s8, {label: '* / *, R', attrs: {'stroke-dasharray': 'none'}});
-
-	        s1.joint(s7, {label: '0 / 0, R', attrs: {'stroke-dasharray': 'none'}});
-	        s3.joint(s7, {label: '0 / 0, R', attrs: {'stroke-dasharray': 'none'}});
-	        s7.joint(s7, {label: '* / *, R\n1 / 1, R\n0 / 0, R\n= / =, R', vertices: ['230 ' + (top - 170), '160 ' + (top - 170)], attrs: {'stroke-dasharray': 'none'}});
-	        s7.joint(s8, {label: '  / 0, R', attrs: {'stroke-dasharray': 'none'}});
-
 	        // Steps
 			var steps = {};
 			
@@ -175,8 +120,6 @@
 	       
 	       //s27
 	        steps['s27:*']  = {state: 's10', value: '*', move: 'right'};
-	        
-	        // handle 0
 	        
 			// Turning machine
 			var turing = new Turing(steps, 's1', 's9');
